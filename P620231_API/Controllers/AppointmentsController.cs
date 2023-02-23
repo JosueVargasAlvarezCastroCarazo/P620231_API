@@ -5,56 +5,55 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using P620231_API.Models;
 using P620231_API.Attributes;
+using P620231_API.Models;
 
 namespace P620231_API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [ApiKey] //de esta manera todos los endpoints usan este api key
-    public class UserRolesController : ControllerBase
+    [ApiKey]
+    public class AppointmentsController : ControllerBase
     {
         private readonly P620231_AutoAppoContext _context;
 
-        public UserRolesController(P620231_AutoAppoContext context)
+        public AppointmentsController(P620231_AutoAppoContext context)
         {
             _context = context;
         }
 
-        // GET: api/UserRoles
+        // GET: api/Appointments
         [HttpGet]
-        //[ApiKey] de esta manera solo el usa este api key
-        public async Task<ActionResult<IEnumerable<UserRole>>> GetUserRoles()
+        public async Task<ActionResult<IEnumerable<Appointment>>> GetAppointments()
         {
-            return await _context.UserRoles.ToListAsync();
+            return await _context.Appointments.ToListAsync();
         }
 
-        // GET: api/UserRoles/5
+        // GET: api/Appointments/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<UserRole>> GetUserRole(int id)
+        public async Task<ActionResult<Appointment>> GetAppointment(int id)
         {
-            var userRole = await _context.UserRoles.FindAsync(id);
+            var appointment = await _context.Appointments.FindAsync(id);
 
-            if (userRole == null)
+            if (appointment == null)
             {
                 return NotFound();
             }
 
-            return userRole;
+            return appointment;
         }
 
-        // PUT: api/UserRoles/5
+        // PUT: api/Appointments/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutUserRole(int id, UserRole userRole)
+        public async Task<IActionResult> PutAppointment(int id, Appointment appointment)
         {
-            if (id != userRole.UserRoleId)
+            if (id != appointment.AppointmentId)
             {
                 return BadRequest();
             }
 
-            _context.Entry(userRole).State = EntityState.Modified;
+            _context.Entry(appointment).State = EntityState.Modified;
 
             try
             {
@@ -62,7 +61,7 @@ namespace P620231_API.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!UserRoleExists(id))
+                if (!AppointmentExists(id))
                 {
                     return NotFound();
                 }
@@ -75,36 +74,36 @@ namespace P620231_API.Controllers
             return NoContent();
         }
 
-        // POST: api/UserRoles
+        // POST: api/Appointments
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<UserRole>> PostUserRole(UserRole userRole)
+        public async Task<ActionResult<Appointment>> PostAppointment(Appointment appointment)
         {
-            _context.UserRoles.Add(userRole);
+            _context.Appointments.Add(appointment);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetUserRole", new { id = userRole.UserRoleId }, userRole);
+            return CreatedAtAction("GetAppointment", new { id = appointment.AppointmentId }, appointment);
         }
 
-        // DELETE: api/UserRoles/5
+        // DELETE: api/Appointments/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteUserRole(int id)
+        public async Task<IActionResult> DeleteAppointment(int id)
         {
-            var userRole = await _context.UserRoles.FindAsync(id);
-            if (userRole == null)
+            var appointment = await _context.Appointments.FindAsync(id);
+            if (appointment == null)
             {
                 return NotFound();
             }
 
-            _context.UserRoles.Remove(userRole);
+            _context.Appointments.Remove(appointment);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool UserRoleExists(int id)
+        private bool AppointmentExists(int id)
         {
-            return _context.UserRoles.Any(e => e.UserRoleId == id);
+            return _context.Appointments.Any(e => e.AppointmentId == id);
         }
     }
 }

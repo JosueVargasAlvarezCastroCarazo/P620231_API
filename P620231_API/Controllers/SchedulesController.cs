@@ -5,56 +5,55 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using P620231_API.Models;
 using P620231_API.Attributes;
+using P620231_API.Models;
 
 namespace P620231_API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [ApiKey] //de esta manera todos los endpoints usan este api key
-    public class UserRolesController : ControllerBase
+    [ApiKey]
+    public class SchedulesController : ControllerBase
     {
         private readonly P620231_AutoAppoContext _context;
 
-        public UserRolesController(P620231_AutoAppoContext context)
+        public SchedulesController(P620231_AutoAppoContext context)
         {
             _context = context;
         }
 
-        // GET: api/UserRoles
+        // GET: api/Schedules
         [HttpGet]
-        //[ApiKey] de esta manera solo el usa este api key
-        public async Task<ActionResult<IEnumerable<UserRole>>> GetUserRoles()
+        public async Task<ActionResult<IEnumerable<Schedule>>> GetSchedules()
         {
-            return await _context.UserRoles.ToListAsync();
+            return await _context.Schedules.ToListAsync();
         }
 
-        // GET: api/UserRoles/5
+        // GET: api/Schedules/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<UserRole>> GetUserRole(int id)
+        public async Task<ActionResult<Schedule>> GetSchedule(int id)
         {
-            var userRole = await _context.UserRoles.FindAsync(id);
+            var schedule = await _context.Schedules.FindAsync(id);
 
-            if (userRole == null)
+            if (schedule == null)
             {
                 return NotFound();
             }
 
-            return userRole;
+            return schedule;
         }
 
-        // PUT: api/UserRoles/5
+        // PUT: api/Schedules/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutUserRole(int id, UserRole userRole)
+        public async Task<IActionResult> PutSchedule(int id, Schedule schedule)
         {
-            if (id != userRole.UserRoleId)
+            if (id != schedule.ScheduleId)
             {
                 return BadRequest();
             }
 
-            _context.Entry(userRole).State = EntityState.Modified;
+            _context.Entry(schedule).State = EntityState.Modified;
 
             try
             {
@@ -62,7 +61,7 @@ namespace P620231_API.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!UserRoleExists(id))
+                if (!ScheduleExists(id))
                 {
                     return NotFound();
                 }
@@ -75,36 +74,36 @@ namespace P620231_API.Controllers
             return NoContent();
         }
 
-        // POST: api/UserRoles
+        // POST: api/Schedules
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<UserRole>> PostUserRole(UserRole userRole)
+        public async Task<ActionResult<Schedule>> PostSchedule(Schedule schedule)
         {
-            _context.UserRoles.Add(userRole);
+            _context.Schedules.Add(schedule);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetUserRole", new { id = userRole.UserRoleId }, userRole);
+            return CreatedAtAction("GetSchedule", new { id = schedule.ScheduleId }, schedule);
         }
 
-        // DELETE: api/UserRoles/5
+        // DELETE: api/Schedules/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteUserRole(int id)
+        public async Task<IActionResult> DeleteSchedule(int id)
         {
-            var userRole = await _context.UserRoles.FindAsync(id);
-            if (userRole == null)
+            var schedule = await _context.Schedules.FindAsync(id);
+            if (schedule == null)
             {
                 return NotFound();
             }
 
-            _context.UserRoles.Remove(userRole);
+            _context.Schedules.Remove(schedule);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool UserRoleExists(int id)
+        private bool ScheduleExists(int id)
         {
-            return _context.UserRoles.Any(e => e.UserRoleId == id);
+            return _context.Schedules.Any(e => e.ScheduleId == id);
         }
     }
 }
