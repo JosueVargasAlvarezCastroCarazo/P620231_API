@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using P620231_API.Attributes;
 using P620231_API.Models;
 using P620231_API.ModelsDTOs;
+using P620231_API.Tools;
 
 namespace P620231_API.Controllers
 {
@@ -126,7 +127,9 @@ namespace P620231_API.Controllers
         public async Task<ActionResult<User>> ValidateUserLogin(string email, string password)
         {
            
-           var user = await _context.Users.SingleOrDefaultAsync(e => e.Email == email && e.LoginPassword == password);
+            String EncriptedPassword = new Crypto().EncriptarEnUnSentido(password);
+            
+            var user = await _context.Users.SingleOrDefaultAsync(e => e.Email == email && e.LoginPassword == EncriptedPassword);
 
             if (user == null)
             {
@@ -172,6 +175,9 @@ namespace P620231_API.Controllers
         [HttpPost]
         public async Task<ActionResult<User>> PostUser(User user)
         {
+
+            user.LoginPassword = new Crypto().EncriptarEnUnSentido(user.LoginPassword);
+
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
