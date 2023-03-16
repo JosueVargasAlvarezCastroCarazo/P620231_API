@@ -45,6 +45,9 @@ namespace P620231_API.Controllers
             return user;
         }
 
+
+
+        //we use IEnumerable para devolver listas
         // GET: api/Users/GetUserByEmail
         [HttpGet("GetUserByEmail/{email}")]
         public ActionResult<IEnumerable<UserDTO>> GetUserByEmail(string email)
