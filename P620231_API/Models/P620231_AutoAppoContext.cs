@@ -18,6 +18,7 @@ namespace P620231_API.Models
 
         public virtual DbSet<Appointment> Appointments { get; set; } = null!;
         public virtual DbSet<AppointmentStatus> AppointmentStatuses { get; set; } = null!;
+        public virtual DbSet<RecoveryCode> RecoveryCodes { get; set; } = null!;
         public virtual DbSet<Schedule> Schedules { get; set; } = null!;
         public virtual DbSet<Service> Services { get; set; } = null!;
         public virtual DbSet<User> Users { get; set; } = null!;
@@ -96,6 +97,21 @@ namespace P620231_API.Models
                 entity.Property(e => e.AppoStatusDescription)
                     .HasMaxLength(255)
                     .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<RecoveryCode>(entity =>
+            {
+                entity.ToTable("RecoveryCode");
+
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.Code).HasMaxLength(200);
+
+                entity.Property(e => e.Email).HasMaxLength(200);
+
+                entity.Property(e => e.GenerateDate)
+                    .HasColumnType("smalldatetime")
+                    .HasDefaultValueSql("(getdate())");
             });
 
             modelBuilder.Entity<Schedule>(entity =>
