@@ -145,14 +145,26 @@ namespace P620231_API.Controllers
         // PUT: api/Users/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutUser(int id, User user)
+        public async Task<IActionResult> PutUser(int id, UserDTO user)
         {
-            if (id != user.UserId)
+            if (id != user.IDUsuario)
             {
                 return BadRequest();
             }
 
-            _context.Entry(user).State = EntityState.Modified;
+            var newUser = new User();
+
+            newUser.UserId = user.IDUsuario;
+            newUser.UserRoleId = user.IDRole;
+            newUser.UserStatusId = user.IDEstado;
+            newUser.CardId = user.Cedula;
+            newUser.Name = user.Nombre;
+            newUser.Email = user.Correo;
+            newUser.PhoneNumber = user.NumeroTelefono;
+            newUser.LoginPassword = user.Contrasennia;
+            newUser.Address = user.Direccion;
+
+            _context.Entry(newUser).State = EntityState.Modified;
 
             try
             {

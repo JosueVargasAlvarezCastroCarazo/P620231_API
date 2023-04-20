@@ -7,12 +7,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using P620231_API.Attributes;
 using P620231_API.Models;
+using P620231_API.ModelsDTOs;
 
 namespace P620231_API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [ApiKey]
+    //[ApiKey]
     public class AppointmentsController : ControllerBase
     {
         private readonly P620231_AutoAppoContext _context;
@@ -34,6 +35,21 @@ namespace P620231_API.Controllers
         public async Task<ActionResult<Appointment>> GetAppointment(int id)
         {
             var appointment = await _context.Appointments.FindAsync(id);
+
+            if (appointment == null)
+            {
+                return NotFound();
+            }
+
+            return appointment;
+        }
+
+        // GET: api/Appointments/5
+        [HttpGet("GetAppointmentListByUser")]
+        public async Task<ActionResult<IEnumerable<Appointment>>> GetAppointmentListByUser(int id)
+        {
+
+            var appointment = await _context.Appointments.Where(u => u.UserId == id).ToListAsync();
 
             if (appointment == null)
             {

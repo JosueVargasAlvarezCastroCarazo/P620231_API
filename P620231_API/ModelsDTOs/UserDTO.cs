@@ -35,8 +35,8 @@ namespace P620231_API.ModelsDTOs
         public int IDRole { get; set; }
         public int IDEstado { get; set; }
 
-        public string Role { get; set; } = null!;
-        public string Estado { get; set; } = null!;
+        public string? Role { get; set; } = null!;
+        public string? Estado { get; set; } = null!;
 
 
 
